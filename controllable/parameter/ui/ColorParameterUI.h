@@ -101,7 +101,8 @@ public:
 	juce::Array<ColorParameter*> colorParams;
 	juce::var valueOnEditorOpen;
 	ColorParameter* colorParam;
-	juce::CallOutBox* colorEditor;
+	// SafePointer: CallOutBox can die without notifying if listener wasn't added (see showEditWindowInternal)
+	juce::Component::SafePointer<juce::CallOutBox> colorEditor;
 
 	bool dispatchOnDoubleClick;
 	bool dispatchOnSingleClick;
