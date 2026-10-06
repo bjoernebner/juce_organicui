@@ -25,8 +25,8 @@ ColorParameterUI::ColorParameterUI(Array<ColorParameter*> parameters) :
 
 ColorParameterUI::~ColorParameterUI()
 {
-	if (colorEditor != nullptr) colorEditor->removeComponentListener(this);
-
+	if (colorEditor != nullptr)
+		colorEditor->removeComponentListener(this);
 }
 
 void ColorParameterUI::paint(Graphics& g)
@@ -82,6 +82,9 @@ void ColorParameterUI::showEditWindowInternal()
 	selector->setSize(300, 400);
 	valueOnEditorOpen = colorParam->getValue();
 	colorEditor = &CallOutBox::launchAsynchronously(std::move(selector), getScreenBounds(), nullptr);
+	// Restored: without this, CallOutBox deletion leaves a dangling colorEditor and ~ColorParameterUI crashes in removeComponentListener
+	if (colorEditor != nullptr)
+		colorEditor->addComponentListener(this);
 }
 
 void ColorParameterUI::showEditRangeWindowInternal()
